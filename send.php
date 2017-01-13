@@ -4,14 +4,14 @@ require_once __DIR__ . '/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-$connection = new AMQPStreamConnection('192.168.1.7', 5672, 'admin', '123456');
+$connection = new AMQPStreamConnection('10.5.23.221', 5672, 'admin', '123456');
 $channel = $connection->channel();
 
-
-$channel->queue_declare('hello', false, false, false, false);
+$queueName = 'rpt_01';
+$channel->queue_declare($queueName, false, false, false, false);
 
 $msg = new AMQPMessage('Hello World!');
-$channel->basic_publish($msg, '', 'hello');
+$channel->basic_publish($msg, '', $queueName);
 
 echo " [x] Sent 'Hello World!'\n";
 
